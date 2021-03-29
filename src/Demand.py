@@ -25,7 +25,7 @@ class Demand():
         df['Day_of_week'] = df['Time'].dt.dayofweek
         df['Day_of_month'] = df['Time'].dt.day
         df['Day_of_year'] = df['Time'].dt.dayofyear
-        df['Week_of_year'] = df['Time'].dt.isocalendar().week
+        # df['Week_of_year'] = df['Time'].dt.isocalendar().week
         df.set_index('Time', inplace=True, drop=True)
         df = df.astype('int')
         self.dataframe = df
