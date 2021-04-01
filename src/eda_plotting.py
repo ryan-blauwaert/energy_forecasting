@@ -20,7 +20,14 @@ def plot_timeseries(ax, df, start_date, end_date, label=None):
     ax.set_xlabel('Date', size=16)
     ax.set_ylabel('Megawatthours', size=16)
 
+def plot_predictions_vs_true(ax, y_test, predictions, date_index):
+    ax.plot(date_index, y_test, label='Actual')
+    ax.plot(preds_index, predictions, alpha=0.5, label='Predicted')
+    ax.legend(fontsize=12)
+    ax.set_xlabel('Date', size=16)
+    ax.set_ylabel('Megawatthours', size=16)
 
+    
 if __name__ == '__main__':
 
     plt.style.use('seaborn-darkgrid')
@@ -34,13 +41,13 @@ if __name__ == '__main__':
     # print(time_feat_df.head())
 
 
-    # fig, ax = plt.subplots(figsize=(12, 4))
-    # plot_resampled_trend(ax, df, 'Q-JUL', 'Quarterly Mean Demand')
-    # ax.set_title('Quarterly Mean MWH Demand', size=24)
-    # ax.set_ylabel('Megawatthours', size=16)
-    # ax.set_xlabel('Date', size=16)
-    # plt.savefig('../images/eda/quarterly_means.png', dpi=500)
-    # plt.show()
+    fig, ax = plt.subplots(figsize=(12, 4))
+    plot_resampled_trend(ax, df, 'Q-JUL', 'Quarterly Mean Demand')
+    ax.set_title('Quarterly Mean MWH Demand', size=24)
+    ax.set_ylabel('Megawatthours', size=16)
+    ax.set_xlabel('Date', size=16)
+    plt.savefig('../images/eda/quarterly_means.png', dpi=500)
+    plt.show()
 
     fig, ax = plt.subplots(figsize=(12, 4))
     plot_timeseries(ax, df, '2017-07-01 00:00:00', '2017-07-31 23:00:00', 'Actual Demand')
@@ -53,19 +60,19 @@ if __name__ == '__main__':
     days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     
-    # fig, ax = plt.subplots(figsize=(12, 6))
-    # sns.violinplot(time_feat_df['Day_of_week'], time_feat_df['Megawatthours'])
-    # ax.set_title('Demand by Day', size=24)
-    # plt.yticks(fontsize=12)
-    # plt.xticks(ticks=range(len(days)), labels=days, fontsize=12)
-    # ax.set_ylabel('Megawatthours', size=16)
-    # ax.set_xlabel('Day', size=16)
-    # plt.savefig('../images/eda/daily_agg.png', dpi=500)
-    # plt.show()
+    fig, ax = plt.subplots(figsize=(12, 6))
+    sns.violinplot(time_feat_df['Month'], time_feat_df['Megawatthours'])
+    ax.set_title('Demand by Month', size=24)
+    plt.yticks(fontsize=12)
+    plt.xticks(ticks=range(len(months)), labels=months, fontsize=12)
+    ax.set_ylabel('Megawatthours', size=16)
+    ax.set_xlabel('Month', size=16)
+    plt.savefig('../images/eda/monthly_agg.png', dpi=500)
+    plt.show()
 
-    # fig, ax = plt.subplots(figsize=(12, 4))
-    # plot_timeseries(ax, df, df.index[0], df.index[-1], label='Hourly Demand')
-    # ax.set_title('Hourly Electricity Demand', size=24)
-    # plt.savefig('../images/hourly_elec_demand.png', dpi=500)
-    # plt.show()
+    fig, ax = plt.subplots(figsize=(12, 4))
+    plot_timeseries(ax, df, df.index[0], df.index[-1], label='Hourly Demand')
+    ax.set_title('Hourly Electricity Demand', size=24)
+    plt.savefig('../images/hourly_elec_demand.png', dpi=500)
+    plt.show()
 
