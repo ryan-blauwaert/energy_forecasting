@@ -11,6 +11,7 @@ class Demand():
         self.time_features_df = None
         self.trig_df = None
         
+        
     def load_data(self, filepath):
         
         df = pd.read_csv(filepath)
@@ -59,12 +60,33 @@ class Demand():
         df = pd.concat([df.loc[n_lag+n_ahead:], lag_df], axis=1)
         return df
 
-    def split_X_y(self, df):
+    def scale_split(self, df, train_test_idx=None, scaler=None):
         df = df.copy()
-        X = df.set_index('Time')
-        y = X.pop(self.target)
-        return X, y
+        df = df.set_index('Time', drop=True)
+        if isinstance(train_test_idx, str):
+            idx = df.index.get_loc(train_test_idx)
+        else:
+            idx = train_test_idx
+        train, test = df[:idx], df[idx:]    
+        if scaler:
+            sclr = scaler
+            train = sclr.fit_transform(train)
+            test = sclr.transform(test)
+        X_train = train[:, 1:]
+        y_train = train[:, 0]
+        X_test = test[:, 1:]
+        y_test = test[:, 0]
+        return X_train, X_test, y_train, y_test
+            
+    def reshape_for_rnn(self, X_train, X_test, y_train, y_test):
+        X_train = np.expand_dims(X_train, axis=2)
+        X_test = np.expand_dims(X_test, axis=2)
+        y_train = np.expand_dims(y_train, axis=1)
+        y_test = np.expand_dims(y_test, axis=1)
+        return X_train, X_test, y_train, y_test
 
+
+    
 if __name__ == '__main__':
 
     path = '../data/demand_lower_48'
