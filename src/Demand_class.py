@@ -72,6 +72,8 @@ class Demand():
             sclr = scaler
             train = sclr.fit_transform(train)
             test = sclr.transform(test)
+        else:
+            train, test = train.values, test.values
         X_train = train[:, 1:]
         y_train = train[:, 0]
         X_test = test[:, 1:]
