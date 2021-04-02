@@ -28,7 +28,7 @@ The [U.S. Energy Information Administration](https://www.eia.gov/) provides hour
 | 2015-07-01 04:00:00 | 398386        |
 | 2015-07-01 05:00:00 | 388954        |
 | 2015-07-01 06:00:00 | 392487        |
----
+
 
 | Statistic          | Megawatthours |
 |--------------------|---------------|
@@ -39,7 +39,7 @@ The [U.S. Energy Information Administration](https://www.eia.gov/) provides hour
 | Median Value       | 443387        |
 | Third Quartile     | 491278        |
 | Maximum Value      | 717849        |
----
+
 By graphically plotting hourly electricity demand over time, we are able to see a cyclical pattern:
 
 ![hourly elec demand](./images/hourly_elec_demand.png)
@@ -89,7 +89,7 @@ Finally, the long-term trend in energy demand can be seen in the figure below. T
 ![Polynomial trendline](./images/eda/poly_trend.png)
 
 ## Model Selection and Evaluation
----
+
 
 Having gained a better understanding of the cyclical nature of electricity demand, the next challenge was to accurately forecast future demand. To do so, I first decided on a metric by which to evaluate predictions made by any model. Mean Absolute Percent Error (MAPE) will equally measure the error of predictions both above and below actual demand and is easily interpretable when working with large numbers. As a point of comparison, I first calculated the MAPE of predicting the mean electricity demand for all hours: `MAPE = 19.3%`
 
@@ -102,7 +102,7 @@ To improve on this baseline score, I used three supervised learning models:
 Preliminary modeling and tuning quickly showed that an untuned XGBoost model outperformed the tuned Random Forest model and therefore the Random Forest model was abandoned relatively early in the process. 
 
 ### XGBoost
---- 
+
 
 The training data used for the XGBoost model was the same data featurized with time variables (Year, Month, Hour, Day of Week, Day of Month, Day of Year) described above. This model was fit using a Random Search followed by a Grid Search and trained using a 5-fold TimeSeries split cross validation technique to preserve the sequential nature of the data. The resulting model was then tested against a previously unseen hold-out set ranging from March 1, 2020 to March 21, 2021. The predictions from this model can be seen below in orange overlayed on the actual demand measurements in blue.  
 
@@ -114,7 +114,6 @@ This model successfully captures the annual seasonality of electricity demand as
 
 
 ### Autoregressive Recurrent Neural Network
----
 
 In an attempt to improve on the results from the XGBoost model described above, I used a recurrent neural network to forecast hourly energy demand. For this method, I featurized the data using a lag methodology. Below is a sample of the data used in this method. Each feature, n-24 through n-1 is a demand metric corresponding to the 24 hours prior to the target variable. In this way, the model will predict based on the hours leading up to the target.  
 
@@ -143,7 +142,7 @@ Finally, I retrained the model to predict hourly demand based on 24 measurements
 While the model forecast the annual seasonality reasonably well, it does a poor job of predicting on an hourly basis. Its MAPE score is `8.9%` makes it a worse predictor than the XGBoost model when forecasting at this range. 
 
 ## Conclusions
----
+
 
 The figure below summarizes the results of the various models tested in this analysis:
 
@@ -158,7 +157,7 @@ The figure below summarizes the results of the various models tested in this ana
 Based on these results, the model used to forecast hourly electricity demand is highly dependent on the time frame of interest. The Autoregressive RNN outperforms the XGBoost model for short-term forecasting, and can be used to assist in decisions regarding electricity transmission. For longer-term forecasting, the XGBoost model is superior, and is therefore better suited for informing decisions regarding resource allocation. 
 
 ## Directions for Further Research
----
+
 1. Incorporation of weather data to capture short-term fluctuations in demand
 2. Incorporation of additional historical data to assess long-term electricity demand trends
 3. Similar analysis and modeling of regional energy production and demand
