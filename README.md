@@ -139,7 +139,7 @@ Finally, I retrained the model to predict hourly demand based on 24 measurements
 
 ![RNN year ahead](./images/year_ahead_rnn.png)
 
-While the model forecast the annual seasonality reasonably well, it does a poor job of predicting on an hourly basis. Its MAPE score is `8.9%` makes it a worse predictor than the XGBoost model when forecasting at this range. 
+While the model forecast the annual seasonality reasonably well, it does a poor job of predicting on an hourly basis. Its MAPE score of `8.9%` makes it a worse predictor than the XGBoost model when forecasting at this range. 
 
 ## Conclusions
 
