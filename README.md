@@ -16,10 +16,10 @@ Over the last 5 years, the United States consumed an average of nearly 11 millio
 
 The purpose of this study is to:
 1. Analyze the short-term and long-term time features which contribute to electricty demand in the United States
-2. To build and evaluate several supervised learning models in order to accurately forecast energy demand.
+2. Build and evaluate several supervised learning models in order to accurately forecast electricity demand.
 
 ## The Data
-The [U.S. Energy Information Administration](https://www.eia.gov/) provides hourly energy demand data, measured hourly, from across the United States. The data consists of only two features: hourly timestamps, and the number of megawatt hours of electricity consumed in that hour. These records span from July 1, 2015 to the retrieval date: March 21, 2021. The first few rows are displayed below, followed by some summary statistics:
+The [U.S. Energy Information Administration](https://www.eia.gov/) provides energy demand data, measured hourly, from across the United States. The data consists of only two features: hourly timestamps, and the number of megawatt hours of electricity consumed in that hour. These records span from July 1, 2015 to the retrieval date: March 21, 2021. The first few rows are displayed below, followed by some summary statistics:
 
 | Time                | Megawatthours |
 |---------------------|---------------|
