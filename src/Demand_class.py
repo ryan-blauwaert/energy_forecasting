@@ -3,9 +3,18 @@ import pandas as pd
 
 
 class Demand():
-
+    """
+    Class which houses electricity demand data
+    and its associated methods and attributes
+    """
     def __init__(self, target='Megawatthours'):
+        """Initializes an instance of the Demand 
+        class with a target variable
 
+        Args:
+            target (str, optional): Target variable in the dataset
+            for future modeling. Defaults to 'Megawatthours'.
+        """
         self.target = target
         self.dataframe = None
         self.time_features_df = None
@@ -13,7 +22,13 @@ class Demand():
         
         
     def load_data(self, filepath):
-        
+        """Loads electricity demand data into self.dataframe
+        and performs some preliminary data cleaning operations.
+
+        Args:
+            filepath (str): relative path of the data file to be 
+            loaded into Demand object.
+        """
         df = pd.read_csv(filepath)
         df['Time'] = df['Time'].apply(lambda x: x[:-6])
         df['Time'] = pd.to_datetime(df['Time'], errors='coerce')
@@ -23,7 +38,9 @@ class Demand():
         self.dataframe = df
 
     def create_time_featues(self):
-
+        """Creates several time features from self.dataframe and
+        stores the resulting dataframe in self.time_features_df
+        """
         df = self.dataframe.copy()
         df['Year'] = df['Time'].dt.year
         df['Month'] = df['Time'].dt.month
@@ -37,7 +54,10 @@ class Demand():
         self.time_features_df = df
 
     def create_trig_df(self):
-        
+        """Creates trigonometric sin and cos time features to 
+        capture cyclical patterns in data. Stores resulting 
+        dataframe in df.trig_df
+        """
         df = self.time_features_df.copy()
         df = df.drop(columns=['Day_of_week', 
                                 'Day_of_month', 
@@ -52,7 +72,19 @@ class Demand():
         self.trig_df = df
 
     def create_lag_variables(self, df, n_lag, n_ahead=0):
-        
+        """Creates lag variables from 'Megawatthours' column of 
+        input dataframe. 
+
+        Args:
+            df (DataFrame): DataFrame in which to create lag variables.
+            n_lag (int): Number of lag variables to be created in each row.
+            n_ahead (int, optional): Number of hours between last lag
+            variable and the target variable. Increase to predict further
+            into future. Value of 0 will predict the next hour. Defaults to 0.
+
+        Returns:
+            [DataFrame]: DataFrame with lag variables included as features
+        """
         lag_rows = []
         for i in range(n_lag+n_ahead, len(df)):
             lag_rows.append(df.loc[i-(n_lag+n_ahead):i-n_ahead-1, 'Megawatthours'].values)
@@ -60,7 +92,23 @@ class Demand():
         df = pd.concat([df.loc[n_lag+n_ahead:], lag_df], axis=1)
         return df
 
-    def scale_split(self, df, train_test_idx=None, scaler=None):
+    def scale_split(self, df, train_test_idx, scaler=None):
+        """Scales and splits a dataframe into X_train, X_test, y_train, and
+        y_test arrays for machine learning. Assumes target variable is in 
+        first column. 
+
+        Args:
+            df (DataFrame): DataFrame from which to extract X_train, 
+            X_test, y_train, and y_test objects
+            train_test_idx (int or str): Index on which to split train
+            from test sets.
+            scaler (scaler object, optional): Instance of scaler object.
+            e.g. MinMaxScaler(). Defaults to None.
+
+        Returns:
+            [arr, arr, arr, arr]: Four arrays suited for input 
+            into supervised machine learning models.
+        """
         df = df.copy()
         df = df.set_index('Time', drop=True)
         if isinstance(train_test_idx, str):
@@ -81,6 +129,19 @@ class Demand():
         return X_train, X_test, y_train, y_test
             
     def reshape_for_rnn(self, X_train, X_test, y_train, y_test):
+        """Adds an additional dimension to X_train, X_test, y_train, y_test
+        arrays to adapt them to recurrent neural network models.
+
+        Args:
+            X_train (arr): 2-dimensional feature matrix 
+            X_test (arr)): 2-dimensional feature matrix
+            y_train (arr): 1-dimensional target matrix
+            y_test (arr): 1-dimensional target matrix
+
+        Returns:
+            [arr, arr, arr, arr]: Four arrays reshaped for input 
+            neural network model
+        """
         X_train = np.expand_dims(X_train, axis=2)
         X_test = np.expand_dims(X_test, axis=2)
         y_train = np.expand_dims(y_train, axis=1)

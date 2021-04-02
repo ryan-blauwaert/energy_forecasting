@@ -5,6 +5,18 @@ import seaborn as sns
 from Demand_class import Demand
 
 def plot_resampled_trend(ax, df, resample, label=None):
+    """Resamples and aggregates rows of DataFrame based on the 
+    given resample input. Plots resulting line on ax.
+
+    Args:
+        ax (axes): axes on which to plot line.  
+        df (DataFrame): DataFrame containing data which is to be 
+        resampled and plotted. 
+        resample (str): Indicates the way in which to resample data; 
+        is passed to DataFrame's built-in resample method.
+        label (str, optional): Label of the plotted line to be shown 
+        in the legend. Defaults to None.
+    """
     mwh = pd.Series(df['Megawatthours'])
     resamp = mwh.resample(resample).mean()
     ax.plot(resamp, label=label)
@@ -13,6 +25,16 @@ def plot_resampled_trend(ax, df, resample, label=None):
     ax.set_ylabel('Megawatthours', size=16)
 
 def plot_timeseries(ax, df, start_date, end_date, label=None):
+    """Plots a line of the timeseries data on the given axes.
+
+    Args:
+        ax (axes): Axes on which to plot the timeseries line
+        df (DataFrame): DataFrame containing the data to be plotted.
+        start_date (str): Lower bound of timeseries
+        end_date (str): Upper bound of timeseries
+        label (str, optional): Label of the plotted line to be shown
+        in the legend. Defaults to None.
+    """
     df = df[start_date:end_date]
     ax.plot(df, label=label)
     ax.plot(df.index, [np.mean(df)]*len(df), label='Mean Demand')
@@ -21,6 +43,15 @@ def plot_timeseries(ax, df, start_date, end_date, label=None):
     ax.set_ylabel('Megawatthours', size=16)
 
 def plot_predictions_vs_true(ax, y_test, predictions, date_index):
+    """Plots both y_true and y_predicted values on the same axes.
+
+    Args:
+        ax (axes): Axes on which to plot the predictions.
+        y_test (arr): Matrix of actual target variables.
+        predictions (arr): Matrix of predicted target variables.
+        date_index (arr): Range of y_test indices; plotted along
+        the x-axis
+    """
     ax.plot(date_index, y_test, label='Actual')
     ax.plot(preds_index, predictions, alpha=0.5, label='Predicted')
     ax.legend(fontsize=12)
