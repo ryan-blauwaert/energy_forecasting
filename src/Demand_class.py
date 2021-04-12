@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
-
+import json
+import requests
 
 class Demand():
     """
@@ -21,16 +22,36 @@ class Demand():
         self.trig_df = None
         
         
-    def load_data(self, filepath):
+    def load_data(self, region):
         """Loads electricity demand data into self.dataframe
         and performs some preliminary data cleaning operations.
 
         Args:
-            filepath (str): relative path of the data file to be 
+            region (str): relative path of the data file to be 
             loaded into Demand object.
         """
-        df = pd.read_csv(filepath)
-        df['Time'] = df['Time'].apply(lambda x: x[:-6])
+        url_stem = 'http://api.eia.gov/series/?api_key='
+        api_key = 'bc8c4348f7c30988e817d0b1b54441c5'
+        regions = {'US48': '&series_id=EBA.US48-ALL.D.HL',
+                    'CAL': '&series_id=EBA.CAL-ALL.D.HL',
+                    'CAR': '&series_id=EBA.CAR-ALL.D.HL',
+                    'CENT': '&series_id=EBA.CENT-ALL.D.HL',
+                    'FLA': '&series_id=EBA.FLA-ALL.D.HL',
+                    'MIDA': '&series_id=EBA.MIDA-ALL.D.HL',
+                    'MIDW': '&series_id=EBA.MIDW-ALL.D.HL',
+                    'NE': '&series_id=EBA.NE-ALL.D.HL', 
+                    'NY': '&series_id=EBA.NY-ALL.D.HL',
+                    'NW': '&series_id=EBA.NW-ALL.D.HL',
+                    'SE': '&series_id=EBA.SE-ALL.D.HL',
+                    'SW': '&series_id=EBA.SW-ALL.D.HL',
+                    'TEN': '&series_id=EBA.TEN-ALL.D.HL',
+                    'TEX': '&series_id=EBA.TEX-ALL.D.HL'}
+        url = url_stem + api_key + regions[region]
+        r = requests.get(url)
+        pull = r.json()
+        hourly_data = pull['series'][0]['data']
+        df = pd.DataFrame(hourly_data, columns=['Time', 'Megawatthours'])
+        df['Time'] = df['Time'].apply(lambda x: x[:-3])
         df['Time'] = pd.to_datetime(df['Time'], errors='coerce')
         df = df.loc[::-1]
         df = df[1:]
