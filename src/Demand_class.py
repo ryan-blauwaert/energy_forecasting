@@ -2,13 +2,14 @@ import numpy as np
 import pandas as pd
 import json
 import requests
+from datetime import timedelta
 
 class Demand():
     """
     Class which houses electricity demand data
     and its associated methods and attributes
     """
-    def __init__(self, target='Megawatthours'):
+    def __init__(self, region, target='Megawatthours'):
         """Initializes an instance of the Demand 
         class with a target variable
 
@@ -16,13 +17,15 @@ class Demand():
             target (str, optional): Target variable in the dataset
             for future modeling. Defaults to 'Megawatthours'.
         """
+        self.region = region
         self.target = target
         self.dataframe = None
         self.time_features_df = None
         self.trig_df = None
+        self.split_idx = None
         
         
-    def load_data(self, region):
+    def load_data(self):
         """Loads electricity demand data into self.dataframe
         and performs some preliminary data cleaning operations.
 
@@ -33,7 +36,7 @@ class Demand():
         
         url_plus_key = 'http://api.eia.gov/series/?api_key=bc8c4348f7c30988e817d0b1b54441c5&series_id=EBA.'
         url_tail = '-ALL.D.HL'
-        url = url_plus_key + region +url_tail
+        url = url_plus_key + self.region +url_tail
         r = requests.get(url)
         pull = r.json()
         hourly_data = pull['series'][0]['data']
@@ -42,8 +45,15 @@ class Demand():
         df['Time'] = pd.to_datetime(df['Time'], errors='coerce')
         df = df.loc[::-1]
         df = df[1:]
+        df['Megawatthours'].replace(0, df['Megawatthours'].mean(), inplace=True)
         df.reset_index(inplace=True, drop=True)
         self.dataframe = df
+        self.split_idx = str(self.dataframe.iloc[-1, 0] + timedelta(hours=1))
+
+    def extend_time(self, hours=24):
+        extension = self.dataframe.iloc[-hours:, 0] + timedelta(days=1)
+        extension = pd.DataFrame(extension)
+        self.dataframe = self.dataframe.append(extension, ignore_index=True, sort=True)
 
     def create_time_features(self):
         """Creates several time features from self.dataframe and
