@@ -30,23 +30,10 @@ class Demand():
             region (str): relative path of the data file to be 
             loaded into Demand object.
         """
-        url_stem = 'http://api.eia.gov/series/?api_key='
-        api_key = 'bc8c4348f7c30988e817d0b1b54441c5'
-        regions = {'US48': '&series_id=EBA.US48-ALL.D.HL',
-                    'CAL': '&series_id=EBA.CAL-ALL.D.HL',
-                    'CAR': '&series_id=EBA.CAR-ALL.D.HL',
-                    'CENT': '&series_id=EBA.CENT-ALL.D.HL',
-                    'FLA': '&series_id=EBA.FLA-ALL.D.HL',
-                    'MIDA': '&series_id=EBA.MIDA-ALL.D.HL',
-                    'MIDW': '&series_id=EBA.MIDW-ALL.D.HL',
-                    'NE': '&series_id=EBA.NE-ALL.D.HL', 
-                    'NY': '&series_id=EBA.NY-ALL.D.HL',
-                    'NW': '&series_id=EBA.NW-ALL.D.HL',
-                    'SE': '&series_id=EBA.SE-ALL.D.HL',
-                    'SW': '&series_id=EBA.SW-ALL.D.HL',
-                    'TEN': '&series_id=EBA.TEN-ALL.D.HL',
-                    'TEX': '&series_id=EBA.TEX-ALL.D.HL'}
-        url = url_stem + api_key + regions[region]
+        
+        url_plus_key = 'http://api.eia.gov/series/?api_key=bc8c4348f7c30988e817d0b1b54441c5&series_id=EBA.'
+        url_tail = '-ALL.D.HL'
+        url = url_plus_key + region +url_tail
         r = requests.get(url)
         pull = r.json()
         hourly_data = pull['series'][0]['data']
@@ -58,7 +45,7 @@ class Demand():
         df.reset_index(inplace=True, drop=True)
         self.dataframe = df
 
-    def create_time_featues(self):
+    def create_time_features(self):
         """Creates several time features from self.dataframe and
         stores the resulting dataframe in self.time_features_df
         """
@@ -173,16 +160,10 @@ class Demand():
     
 if __name__ == '__main__':
 
-    path = '../data/demand_lower_48'
-
-    nat_dem = Demand()
-    nat_dem.load_data(path)
-    # df = nat_dem.dataframe
-    nat_dem.create_time_featues()
-    nat_dem.create_trig_df()
-    print(nat_dem.dataframe)
-    print(nat_dem.time_features_df)
-    print(nat_dem.trig_df)
-    # print(nat_dem.time_features_df)
-    
+    ny = Demand()
+    ny.load_data('NY')
+    print(ny.dataframe.head())
+    ny.create_time_features()
+    ny_time_df = ny.time_features_df
+    ny_time
    
