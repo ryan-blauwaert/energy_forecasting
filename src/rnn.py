@@ -33,8 +33,8 @@ def create_layers_SimpleRNN(model, input_shape, units=200, activation='tanh', dr
 
     model.add(Dense(1))
 
-def compile_and_predict(model, X_train, y_train, X_test, optimizer='adam', 
-                            loss='MSE', epochs=10, batch_size=1000):
+def compile_model(model, X_train, y_train, optimizer='adam', 
+                            loss='MSE', epochs=15, batch_size=1000):
     """Compiles the RNN model passed to it using X_train and y_Train; predicts
     target variable from X_test.
 
@@ -61,8 +61,19 @@ def compile_and_predict(model, X_train, y_train, X_test, optimizer='adam',
 
     model.fit(X_train, y_train, epochs=epochs, batch_size=batch_size)
     
+def predict_future(model, X_test):
+    """Predicts target values for X_test array.
+
+    Args:
+        model (rnn model): Model which has previously been trained
+        X_test (array): numpy array of features used to make predictions
+
+    Returns:
+        array: array of target values
+    """
     predictions = model.predict(X_test)
     return predictions
+
 
 
 
