@@ -1,8 +1,10 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 from Demand_class import Demand
 from XGBoost_helper import find_gridsearch_best_params, fit_best_model, predict_year_future
 import pickle
+from eda_plotting import plot_timeseries
 
 def prep_data_year(region):
     demand = Demand(region)
@@ -31,13 +33,13 @@ if __name__ == '__main__':
                  'NY', 'NW', 'SE', 'SW', 'TEN', 'TEX']
 
     predictions = []
-    for region in regions[:2]:
+    for region in regions:
 
         X_train, X_test, y_train = prep_data_year(region)
-        grid = {'learning_rate': [.01, .1, .2],
+        grid = {'learning_rate': [.01, .1],
                 'max_depth': [2, 4, 8],
-                'lambda': [.01, .1, 1],
-                'alpha': [.01, .1, 1],
+                'lambda': [.01, .1],
+                'alpha': [.01, .1],
                 'n_estimators': [500, 1000, 1500]}
         filepath = '../models/' + region + '_year.pkl'
         create_year_model(X_train, y_train, grid, filepath)
@@ -48,3 +50,5 @@ if __name__ == '__main__':
 
     print(predictions)
     print(len(predictions))
+
+    
