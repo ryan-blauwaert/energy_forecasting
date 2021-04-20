@@ -175,5 +175,5 @@ if __name__ == '__main__':
     print(ny.dataframe.head())
     ny.create_time_features()
     ny_time_df = ny.time_features_df
-    ny_time
+
    
