@@ -27,9 +27,9 @@ def find_gridsearch_best_params(X_train, y_train, grid, tscv=5):
                                     scoring = 'neg_root_mean_squared_error')
     
     xgbr_gridsearch.fit(X_train, y_train)
-    return xgbr_gridsearch.best_params
+    return xgbr_gridsearch.best_params_
 
-def fit_and_predict_best_model(X_train, y_train, X_test, best_params):
+def fit_best_model(X_train, y_train, best_params):
     """Uses best parameters from GridSearchCV to instantiate best
     XGBRegressor; fits model using X_train and y_train arrays; generates
     predictions of target variable from X_test array.
@@ -43,8 +43,11 @@ def fit_and_predict_best_model(X_train, y_train, X_test, best_params):
     """
     best_model = XGBRegressor(**best_params)
     best_model.fit(X_train, y_train)
-    best_preds = best_model.predict(X_test)
+    return best_model
 
+def predict_year_future(model, X_test):
+    preds = model.predict(X_test)
+    return preds
 
 if __name__ == '__main__':
 

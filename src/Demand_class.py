@@ -51,7 +51,7 @@ class Demand():
         self.split_idx = str(self.dataframe.iloc[-1, 0] + timedelta(hours=1))
 
     def extend_time(self, hours=24):
-        extension = self.dataframe.iloc[-hours:, 0] + timedelta(days=1)
+        extension = self.dataframe.iloc[-hours:, 0] + timedelta(hours=hours)
         extension = pd.DataFrame(extension)
         self.dataframe = self.dataframe.append(extension, ignore_index=True, sort=True)
 
@@ -67,7 +67,7 @@ class Demand():
         df['Day_of_month'] = df['Time'].dt.day
         df['Day_of_year'] = df['Time'].dt.dayofyear
         df.set_index('Time', inplace=True, drop=True)
-        df = df.astype('int')
+        # df = df.astype('int')
         df.reset_index(inplace=True)
         self.time_features_df = df
 
