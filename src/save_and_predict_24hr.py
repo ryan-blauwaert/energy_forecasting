@@ -14,10 +14,10 @@ def prep_data(region, scaler, n_lag=24, n_ahead=24):
     demand.load_data()
     demand.extend_time(hours=n_ahead)
     lag_df = demand.create_lag_variables(demand.dataframe, n_lag, n_ahead)
-    X_train, X_test, y_train, _ = demand.scale_split(lag_df, demand.split_idx, scaler)
+    scaler, X_train, X_test, y_train, _ = demand.scale_split(lag_df, demand.split_idx, scaler)
     X_train, X_test, y_train, _ = demand.reshape_for_rnn(X_train, X_test, y_train, _)
-    return X_train, X_test, y_train
-    
+    return scaler, X_train, X_test, y_train
+
 def create_24hr_model(X_train, y_train, filepath):
     model = Sequential()
     create_layers_SimpleRNN(model, (X_train.shape[1], 1))
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     predictions = []
     for region in regions:
         filepath = '../models/' + region + '_24.h5'
-        X_train, X_test, y_train = prep_data(region, sclr)
+        sclr, X_train, X_test, y_train = prep_data(region, sclr)
         # create_24hr_model(X_train, y_train, filepath)  
         loaded_model = load_saved_model(filepath)
         preds = predict_future_demand(loaded_model, X_test, sclr)

@@ -12,11 +12,14 @@ from flask import Flask, render_template, redirect, url_for, request
 from save_and_predict_year import prep_data_year, load_pickle_model, plot_and_save_year
 from save_and_predict_24hr import prep_data, load_saved_model, predict_future_demand, create_24hr_list
 from keras.models import load_model
+from demand_helper import unscale_y
 app = Flask(__name__)
 
 # home page
 REGION = ['US48', 'CAL', 'CAR', 'CENT', 'FLA', 'MIDA', 'MIDW', 'NE',
                  'NY', 'NW', 'SE', 'SW', 'TEN', 'TEX']
+
+
 @app.route('/')
 def index():
     
@@ -33,18 +36,20 @@ def forecast():
     img_path = '/static/imgs/' + reg + '_year.png'
 
     sclr = MinMaxScaler()
-    _, X_test2, _ = prep_data(reg, sclr)
+    sclr, _, X_test2, _ = prep_data(reg, sclr)
     filepath_2 = '../models/' + reg + '_24.h5'
     hr_model = load_model(filepath_2)
     preds = predict_future_demand(hr_model, X_test2, sclr)
+    preds = unscale_y(preds, sclr)
     hr24 = create_24hr_list(reg)
+    df = pd.DataFrame(hr24, columns=['Time'])
+    df['Megawatthours'] = preds
+    html_table = df.to_html()
     return render_template('forecast.html', 
                             region=REGION, 
                             reg=reg, 
                             img_path=img_path,
-                            hr_model=hr_model, 
-                            preds=preds,
-                            hr24=hr24)
+                            html_table=html_table)
 
 @app.route('/data')
 def data():

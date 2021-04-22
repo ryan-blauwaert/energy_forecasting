@@ -138,13 +138,18 @@ class Demand():
             sclr = scaler
             train = sclr.fit_transform(train)
             test = sclr.transform(test)
+            X_train = train[:, 1:]
+            y_train = train[:, 0]
+            X_test = test[:, 1:]
+            y_test = test[:, 0]
+            return sclr, X_train, X_test, y_train, y_test
         else:
             train, test = train.values, test.values
-        X_train = train[:, 1:]
-        y_train = train[:, 0]
-        X_test = test[:, 1:]
-        y_test = test[:, 0]
-        return X_train, X_test, y_train, y_test
+            X_train = train[:, 1:]
+            y_train = train[:, 0]
+            X_test = test[:, 1:]
+            y_test = test[:, 0]
+            return X_train, X_test, y_train, y_test
             
     def reshape_for_rnn(self, X_train, X_test, y_train, y_test):
         """Adds an additional dimension to X_train, X_test, y_train, y_test
