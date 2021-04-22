@@ -17,7 +17,7 @@ def prep_data(region, scaler, n_lag=24, n_ahead=24):
     X_train, X_test, y_train, _ = demand.scale_split(lag_df, demand.split_idx, scaler)
     X_train, X_test, y_train, _ = demand.reshape_for_rnn(X_train, X_test, y_train, _)
     return X_train, X_test, y_train
-
+    
 def create_24hr_model(X_train, y_train, filepath):
     model = Sequential()
     create_layers_SimpleRNN(model, (X_train.shape[1], 1))
@@ -30,14 +30,23 @@ def load_saved_model(filepath):
 
 def predict_future_demand(model, X_test, scaler, n_lag=24):
     preds = model.predict(X_test)
-    unscaled_preds = unscale_y(preds, sclr, n_lag)
-    return unscaled_preds
+    # unscaled_preds = unscale_y(preds, sclr, n_lag)
+    # return unscaled_preds
+    return preds
+
+def create_24hr_list(region, n_ahead=24):
+    demand = Demand(region)
+    demand.load_data()
+    demand.extend_time(hours=n_ahead)
+    hours = demand.dataframe.iloc[-24:, 1].astype('str').tolist()
+    return hours
 
 if __name__ == '__main__':
 
     sclr = MinMaxScaler()
-    regions = ['US48', 'CAL', 'CAR', 'CENT', 'FLA', 'MIDA', 'MIDW', 'NE',
-                 'NY', 'NW', 'SE', 'SW', 'TEN', 'TEX']
+    # regions = ['US48', 'CAL', 'CAR', 'CENT', 'FLA', 'MIDA', 'MIDW', 'NE',
+    #              'NY', 'NW', 'SE', 'SW', 'TEN', 'TEX']
+    regions = ['US48']
     predictions = []
     for region in regions:
         filepath = '../models/' + region + '_24.h5'
@@ -49,3 +58,5 @@ if __name__ == '__main__':
 
     print(len(predictions))
     print(predictions)
+
+    

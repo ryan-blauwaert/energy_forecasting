@@ -5,6 +5,7 @@ from Demand_class import Demand
 from XGBoost_helper import find_gridsearch_best_params, fit_best_model, predict_year_future
 import pickle
 from eda_plotting import plot_timeseries
+plt.style.use('seaborn-darkgrid')
 
 def prep_data_year(region):
     demand = Demand(region)
@@ -26,21 +27,36 @@ def load_pickle_model(filepath):
         loaded_model = pickle.load(f)
     return loaded_model
 
+def plot_and_save_year(region, preds):
+    demand = Demand(region)
+    demand.load_data()
+    demand.extend_time(8760)
+    x_vals = demand.dataframe.iloc[-8760:, 1].values
+    fig, ax = plt.subplots(figsize=(12, 4))
+    ax.plot(x_vals, preds)
+    path = './static/imgs/' + region + '_year.png'
+    ax.set_xlabel('Date', size=16)
+    ax.set_ylabel('Megawatthours', size=16)
+    fig.tight_layout()
+    fig.savefig(path, dpi=500)
+
 
 if __name__ == '__main__':
 
-    # regions = ['US48', 'CAL', 'CAR', 'CENT', 'FLA', 'MIDA', 'MIDW', 'NE',
-    #              'NY', 'NW', 'SE', 'SW', 'TEN', 'TEX']
+    regions = ['US48', 'CAL', 'CAR', 'CENT', 'FLA', 'MIDA', 'MIDW', 'NE',
+                 'NY', 'NW', 'SE', 'SW', 'TEN', 'TEX']
 
     # predictions = []
     # for region in regions:
-
+    
     #     X_train, X_test, y_train = prep_data_year(region)
-    #     grid = {'learning_rate': [.01, .1],
+    #     print(len(X_train))
+    #     print(len(X_test))
+    #     grid = {'learning_rate': [.01],
     #             'max_depth': [2, 4, 8],
-    #             'lambda': [.01, .1],
-    #             'alpha': [.01, .1],
-    #             'n_estimators': [500, 1000, 1500]}
+    #             'lambda': [.01],
+    #             'alpha': [.01],
+    #             'n_estimators': [500, 1000]}
     #     filepath = '../models/' + region + '_year.pkl'
     #     create_year_model(X_train, y_train, grid, filepath)
 
@@ -52,12 +68,22 @@ if __name__ == '__main__':
     # print(len(predictions))
 
 
-    region = 'NW'
+    # for region in regions:
+    #     X_train, X_test, y_train = prep_data_year(region)
+    #     filepath = '../models/' + region + '_year.pkl'
+    #     loaded_model = load_pickle_model(filepath)
+    #     preds = predict_year_future(loaded_model, X_test)
+    #     # print(loaded_model.get_params)
+    #     fig, ax = plt.subplots(figsize=(12, 4))
+    #     ax.plot(range(len(preds)), preds)
+    #     savefig_path = '../images/' + region + '_year.png'
+    #     fig.savefig(savefig_path)
+    
+    region = 'CAL'
+
     X_train, X_test, y_train = prep_data_year(region)
     filepath = '../models/' + region + '_year.pkl'
     loaded_model = load_pickle_model(filepath)
     preds = predict_year_future(loaded_model, X_test)
-    print(loaded_model.get_params)
-    fig, ax = plt.subplots(figsize=(12, 4))
-    ax.plot(range(len(preds)), preds)
-    plt.show()
+    plot_and_save_year(region, preds)
+ 

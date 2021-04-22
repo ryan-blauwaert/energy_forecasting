@@ -3,7 +3,7 @@ import pandas as pd
 from Demand_class import Demand
 
 
-def unscale_y(y_array, scaler, n_lag_variables):
+def unscale_y(y_array, scaler, n_lag_variables=24):
     """Reshapes target matrix so that it can be inverse
     scaled to extract predictions in original scale.
 
