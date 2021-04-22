@@ -46,44 +46,27 @@ if __name__ == '__main__':
     regions = ['US48', 'CAL', 'CAR', 'CENT', 'FLA', 'MIDA', 'MIDW', 'NE',
                  'NY', 'NW', 'SE', 'SW', 'TEN', 'TEX']
 
-    # predictions = []
-    # for region in regions:
+    predictions = []
+    for region in regions:
     
-    #     X_train, X_test, y_train = prep_data_year(region)
-    #     print(len(X_train))
-    #     print(len(X_test))
-    #     grid = {'learning_rate': [.01],
-    #             'max_depth': [2, 4, 8],
-    #             'lambda': [.01],
-    #             'alpha': [.01],
-    #             'n_estimators': [500, 1000]}
-    #     filepath = '../models/' + region + '_year.pkl'
-    #     create_year_model(X_train, y_train, grid, filepath)
+        X_train, X_test, y_train = prep_data_year(region)
+        print(len(X_train))
+        print(len(X_test))
+        grid = {'learning_rate': [.01],
+                'max_depth': [2, 4, 8],
+                'lambda': [.01],
+                'alpha': [.01],
+                'n_estimators': [500, 1000]}
+        filepath = '../models/' + region + '_year.pkl'
+        create_year_model(X_train, y_train, grid, filepath)
 
-    #     loaded_model = load_pickle_model(filepath)
-    #     preds = predict_year_future(loaded_model, X_test)
-    #     predictions.append(preds)
+        loaded_model = load_pickle_model(filepath)
+        preds = predict_year_future(loaded_model, X_test)
+        predictions.append(preds)
 
-    # print(predictions)
-    # print(len(predictions))
+    print(predictions)
+    print(len(predictions))
 
 
-    # for region in regions:
-    #     X_train, X_test, y_train = prep_data_year(region)
-    #     filepath = '../models/' + region + '_year.pkl'
-    #     loaded_model = load_pickle_model(filepath)
-    #     preds = predict_year_future(loaded_model, X_test)
-    #     # print(loaded_model.get_params)
-    #     fig, ax = plt.subplots(figsize=(12, 4))
-    #     ax.plot(range(len(preds)), preds)
-    #     savefig_path = '../images/' + region + '_year.png'
-    #     fig.savefig(savefig_path)
     
-    region = 'CAL'
-
-    X_train, X_test, y_train = prep_data_year(region)
-    filepath = '../models/' + region + '_year.pkl'
-    loaded_model = load_pickle_model(filepath)
-    preds = predict_year_future(loaded_model, X_test)
-    plot_and_save_year(region, preds)
  
