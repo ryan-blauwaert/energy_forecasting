@@ -41,23 +41,24 @@ def forecast():
     hr_model = load_model(filepath_2)
     preds = predict_future_demand(hr_model, X_test2, sclr)
     preds = unscale_y(preds, sclr)
+    preds = [int(pred) for pred in preds]
     hr24 = create_24hr_list(reg)
-    df = pd.DataFrame(hr24, columns=['Time'])
-    df['Megawatthours'] = preds
-    html_table = df.to_html()
+    # df = pd.DataFrame(hr24, columns=['Time'])
+    # df['Megawatthours'] = preds
+    # html_table = df.to_html()
     return render_template('forecast.html', 
                             region=REGION, 
                             reg=reg, 
                             img_path=img_path,
-                            html_table=html_table)
+                            table_data=zip(hr24, preds))
 
-@app.route('/data')
+@app.route('/about')
 def data():
-    return render_template('data.html')
+    return render_template('about.html')
 
-@app.route('/about_me')
+@app.route('/contact')
 def about_me():
-    return render_template('about_me.html')
+    return render_template('contact.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, threaded=True, debug=False)

@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Starter Template for Bootstrap</title>
+    <title>Forecasting Electricity Demand</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../static/css/bootstrap.min.css" rel="stylesheet">
@@ -47,8 +47,8 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="/">Home</a></li>
-            <li class="active"><a href="/data">The Data</a></li>
-            <li class="active"><a href="/about_me">About Me</a></li>
+            <li class="active"><a href="/about">About</a></li>
+            <li class="active"><a href="/contact">Contact</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -57,10 +57,26 @@
     <div class="container">
 
       <div class="starter-template">
-        <h1>About Me</h1>
-        <p class="lead">Short bio followed by links to github project and linkedin profile</p>
+        <h1>Motivation</h1>
+        <p class="lead" style="text-align:left">For most of us, it's difficult to imagine a world in which the lights don't come on when we flip a switch. 
+        We don't often consider the source of the electricity that flows around us or its path from generation to transmission to consumption. 
+        It turns out that electricity is unlike most commodities we consume; it is costly to produce and impossible to store efficiently for future use. 
+        Because of this, it is extremely important for producers to accurately predict electricity demand.</p>
+        <br>
+        <p class="lead" style="text-align:left; margin-bottom: 0;">Forecasting allows electricity generators to:</p>
+        <p class="lead" style="text-align:left; margin-bottom: 0; margin-left: 40px;">- make informed long-term business decision such as building new power plants in response to increasing demand</p>
+        <p class="lead" style="text-align:left; margin-bottom: 0; margin-left: 40px;">- better allocate resources such as labor from plant to plant</p>
+        <p class="lead" style="text-align:left; margin-bottom: 0; margin-left: 40px;">- start and stop generators in response to anticipated demand</p>
+        <p class="lead" style="text-align:left; margin-left: 40px;">- adjust load transmission in response to short-term demand fluctuations</p>
+        <br>
+        <p class="lead" style="text-align:left">Over the last 5 years, the United States consumed an average of nearly 11 million megawatthours each day. 
+        While the cost of electricity varies greatly, even using a conservative estimate of $50 per megawatt hour, it is easy to see that the costs of poorly forecasting demand are astronomical.</p>
+        <br>
+        <h1>The Data</h1>
+        <p class="lead" style="text-align:left">The <a href="https://www.eia.gov/">U.S. Energy Information Administration</a> (EIA) provides energy demand data, measured hourly, from across the United States. 
+        The data consists of only two features: hourly timestamps, and the number of megawatthours of electricity consumed in that hour.
+        These records, beginning in July, 2015, are retrieved from the EIA website in real time when using this tool.</p>
       </div>
-
     </div><!-- /.container -->
 
 

@@ -44,9 +44,9 @@ def create_24hr_list(region, n_ahead=24):
 if __name__ == '__main__':
 
     sclr = MinMaxScaler()
-    # regions = ['US48', 'CAL', 'CAR', 'CENT', 'FLA', 'MIDA', 'MIDW', 'NE',
-    #              'NY', 'NW', 'SE', 'SW', 'TEN', 'TEX']
-    regions = ['US48']
+    regions = ['US48', 'CAL', 'CAR', 'CENT', 'FLA', 'MIDA', 'MIDW', 'NE',
+                 'NY', 'NW', 'SE', 'SW', 'TEN', 'TEX']
+    
     predictions = []
     for region in regions:
         filepath = '../models/' + region + '_24.h5'
