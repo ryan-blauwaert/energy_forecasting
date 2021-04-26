@@ -19,7 +19,7 @@ The purpose of this study is to:
 2. Build and evaluate several machine learning models in order to accurately forecast electricity demand.
 
 ## The Data
-The [U.S. Energy Information Administration](https://www.eia.gov/) provides energy demand data, measured hourly, from across the United States. The data consists of only two features: hourly timestamps, and the number of megawatthours of electricity consumed in that hour. These records span from July 1, 2015 to the retrieval date: March 21, 2021. The first few rows are displayed below, followed by some summary statistics:
+The [U.S. Energy Information Administration](https://www.eia.gov/) provides energy demand data, measured hourly, from across the United States. The data consists of only two features: hourly timestamps, and the number of megawatthours of electricity consumed in that hour. These records span from July 1, 2015 to the retrieval date. The first few rows are displayed below, followed by some summary statistics:
 
 | Time                | Megawatthours |
 |---------------------|---------------|
@@ -141,7 +141,7 @@ Finally, I retrained the model to predict hourly demand based on 24 measurements
 
 While the model forecast the annual seasonality reasonably well, it does a poor job of predicting on an hourly basis. Its MAPE score of `8.9%` makes it a worse predictor than the XGBoost model when forecasting at this range. 
 
-## Conclusions
+## Model Performance Summary
 
 
 The figure below summarizes the results of the various models tested in this analysis:
@@ -156,9 +156,22 @@ The figure below summarizes the results of the various models tested in this ana
 ---
 Based on these results, the model used to forecast hourly electricity demand is highly dependent on the time frame of interest. The Autoregressive RNN outperforms the XGBoost model for short-term forecasting, and can be used to assist in decisions regarding electricity transmission. For longer-term forecasting, the XGBoost model is superior, and is therefore better suited for informing decisions regarding resource allocation. 
 
+## Regional Forecasting
+
+
+
+## Web Application
+
+In order to allow users to interact with these models and generate electricity demand predictions, I created a simple web application using Flask and Bootstrap. The application allows a user to select a region of interest, load the most recent data from the EIA website for that region, and predict the next 24 hours of demand. The application also generates a trend projection for one year into the future. Below are some screenshots showing the application's basic functionality:
+**Homescreen:**
+![homescreen](./images/web_imgs/homescreen.jpg)
+**Selecting an option from the dropdown menu generates a forecast:**
+![24hr_table](./images/web_imgs/24hr_preds.png)
+![year_graph](./images/web_imgs/year_preds.png)
+
+
 ## Directions for Further Research
 
 1. Incorporation of weather data to capture short-term fluctuations in demand
 2. Incorporation of additional historical data to assess long-term electricity demand trends
-3. Similar analysis and modeling of regional energy production and demand
-4. Incorporation of real-time energy demand updates from the EIA website
+3. Additional web application formatting and functionality
