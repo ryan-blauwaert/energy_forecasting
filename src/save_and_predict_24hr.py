@@ -30,8 +30,6 @@ def load_saved_model(filepath):
 
 def predict_future_demand(model, X_test, scaler, n_lag=24):
     preds = model.predict(X_test)
-    # unscaled_preds = unscale_y(preds, sclr, n_lag)
-    # return unscaled_preds
     return preds
 
 def create_24hr_list(region, n_ahead=24):

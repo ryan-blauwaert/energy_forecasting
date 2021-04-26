@@ -1,7 +1,3 @@
-# Demonstrates Bootstrap version 3.3 Starter Template
-# available here: https://getbootstrap.com/docs/3.3/getting-started/#examples
-
-
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -43,9 +39,6 @@ def forecast():
     preds = unscale_y(preds, sclr)
     preds = [int(pred) for pred in preds]
     hr24 = create_24hr_list(reg)
-    # df = pd.DataFrame(hr24, columns=['Time'])
-    # df['Megawatthours'] = preds
-    # html_table = df.to_html()
     return render_template('forecast.html', 
                             region=REGION, 
                             reg=reg, 
