@@ -51,6 +51,14 @@ class Demand():
         self.split_idx = str(self.dataframe.iloc[-1, 0] + timedelta(hours=1))
 
     def extend_time(self, hours=24):
+        """Extends the dataframe by the chosen number of hours to 
+        create room for an X_test array when the dataframe is split.
+
+        Args:
+            hours (int, optional): Number of hours by which to 
+            extend the dataframe. Should be equal to the number of
+            hourly predictions you would like to make. Defaults to 24.
+        """
         extension = self.dataframe.iloc[-hours:, 0] + timedelta(hours=hours)
         extension = pd.DataFrame(extension)
         self.dataframe = self.dataframe.append(extension, ignore_index=True, sort=True)
