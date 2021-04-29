@@ -58,12 +58,16 @@
 
       <div class="starter-template">
         <h1>Electricity Demand Forecast for {{reg}}</h1>
+        <p class="lead">Electricity demand for next year:</p>
+        <div class="container">
+        <img class="d-block m-auto" style="display:block; margin:auto; max-width: 100%;" src="{{img_path}}" alt="forecast_img">
+        </div>
         <p class="lead">Electricity demand for next 24 hours:</p>
         <div style="margin: auto; display: flex; max-width: 50%; justify-content: center;">
         <table>
           <thead>
               <th style="border: 1px black solid; padding: 4px;">Time (Local)</th>
-              <th style="border: 1px black solid; padding: 4px;">Megawatthours</th>
+              <th style="border: 1px black solid; padding: 4px;">Megawatt-hours</th>
               <th></th>
             </thead>
             <tbody>
@@ -78,10 +82,6 @@
         </div>
         <br>
         <br>
-        <p class="lead">Electricity demand for next year:</p>
-        <div class="container">
-        <img class="d-block m-auto" style="display:block; margin:auto; max-width: 100%;" src="{{img_path}}" alt="forecast_img">
-        </div>
         <p class="lead">Select another region:</p>
         <form action="/forecast">
           <select name="region">
