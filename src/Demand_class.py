@@ -3,6 +3,7 @@ import pandas as pd
 import json
 import requests
 from datetime import timedelta
+from config import api_key
 
 class Demand():
     """
@@ -34,9 +35,8 @@ class Demand():
             loaded into Demand object.
         """
         
-        url_plus_key = 'http://api.eia.gov/series/?api_key=bc8c4348f7c30988e817d0b1b54441c5&series_id=EBA.'
         url_tail = '-ALL.D.HL'
-        url = url_plus_key + self.region +url_tail
+        url = api_key + self.region +url_tail
         r = requests.get(url)
         pull = r.json()
         hourly_data = pull['series'][0]['data']
@@ -183,10 +183,10 @@ class Demand():
     
 if __name__ == '__main__':
 
-    ny = Demand()
-    ny.load_data('NY')
-    print(ny.dataframe.head())
-    ny.create_time_features()
-    ny_time_df = ny.time_features_df
+    ny = Demand('NY')
+    ny.load_data()
+    print(ny.dataframe.tail())
+    # ny.create_time_features()
+    # ny_time_df = ny.time_features_df
 
    
