@@ -8,6 +8,17 @@ from eda_plotting import plot_timeseries
 plt.style.use('seaborn-darkgrid')
 
 def prep_data_year(region):
+    """Accesses data from EIA website, featurizes data for use in 
+    gradient boosted regression model, and splits data into X_train,
+    X_test, and y_train arrays 
+
+    Args:
+        region (str): string abbreviation of region of interest
+
+    Returns:
+        [arr, arr, arr]: X_train, X_test, and y_train arrays for use 
+        in gradient boosted regressor
+    """
     demand = Demand(region)
     demand.load_data()
     demand.extend_time(8760)
@@ -17,17 +28,44 @@ def prep_data_year(region):
     return X_train, X_test, y_train
 
 def create_year_model(X_train, y_train, grid, filepath):
+    """Uses X_train and y_train arrays as well as a grid of parameters
+    to create, train, and save a gradient boosted regression model.
+
+    Args:
+        X_train (arr): Feature array
+        y_train (arr): target array
+        grid (dict): dictionary of parameters to be used in a grid
+        search for cross validation 
+        filepath (str): relative file location where the model is to be 
+        saved
+    """
     params = find_gridsearch_best_params(X_train, y_train, grid)
     model = fit_best_model(X_train, y_train, params)
     with open(filepath, 'wb') as f:
        pickle.dump(model, f) 
 
 def load_pickle_model(filepath):
+    """Loads the trained model from file location for use in 
+    generating predictions
+
+    Args:
+        filepath (str): relative file location of the trained model
+
+    Returns:
+        obj: Pre-trained model
+    """
     with open(filepath, 'rb') as f:
         loaded_model = pickle.load(f)
     return loaded_model
 
 def plot_and_save_year(region, preds):
+    """Creates and saves a graphical representation of the MWH 
+    predictions of a given region.
+
+    Args:
+        region (str): string abbreviation of region of interest
+        preds (arr): array of predicted MWH values
+    """
     demand = Demand(region)
     demand.load_data()
     demand.extend_time(8760)

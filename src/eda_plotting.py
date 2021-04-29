@@ -70,21 +70,21 @@ if __name__ == '__main__':
     # print(time_feat_df.head())
 
 
-    # fig, ax = plt.subplots(figsize=(12, 4))
-    # plot_resampled_trend(ax, df, 'Q-JUL', 'Quarterly Mean Demand')
-    # ax.set_title('Quarterly Mean MWH Demand', size=24)
-    # ax.set_ylabel('Megawatthours', size=16)
-    # ax.set_xlabel('Date', size=16)
+    fig, ax = plt.subplots(figsize=(12, 4))
+    plot_resampled_trend(ax, df, 'Q-JUL', 'Quarterly Mean Demand')
+    ax.set_title('Quarterly Mean MWH Demand', size=24)
+    ax.set_ylabel('Megawatthours', size=16)
+    ax.set_xlabel('Date', size=16)
     # plt.savefig('../images/eda/quarterly_means.png', dpi=500)
-    # plt.show()
+    plt.show()
 
-    # fig, ax = plt.subplots(figsize=(12, 4))
-    # plot_timeseries(ax, df, '2017-07-01 00:00:00', '2017-07-31 23:00:00', 'Actual Demand')
-    # ax.set_title('July 2017 Hourly Demand', size=24)
-    # ax.set_xlabel('Date', size=16)
-    # ax.set_ylabel('Megawatthours', size=16)
+    fig, ax = plt.subplots(figsize=(12, 4))
+    plot_timeseries(ax, df, '2017-07-01 00:00:00', '2017-07-31 23:00:00', 'Actual Demand')
+    ax.set_title('July 2017 Hourly Demand', size=24)
+    ax.set_xlabel('Date', size=16)
+    ax.set_ylabel('Megawatthours', size=16)
     # plt.savefig('../images/eda/july_2017_demand.png', dpi=500)
-    # plt.show()
+    plt.show()
 
     days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -97,12 +97,12 @@ if __name__ == '__main__':
     plt.xticks(ticks=range(len(months)), labels=months, fontsize=12)
     ax.set_ylabel('Megawatthours', size=16)
     ax.set_xlabel('Month', size=16)
-    plt.savefig('../images/eda/monthly_agg.png', dpi=500)
+    # plt.savefig('../images/eda/monthly_agg.png', dpi=500)
     plt.show()
 
-    # fig, ax = plt.subplots(figsize=(12, 4))
-    # plot_timeseries(ax, df, df.index[0], df.index[-1], label='Hourly Demand')
-    # ax.set_title('Hourly Electricity Demand', size=24)
+    fig, ax = plt.subplots(figsize=(12, 4))
+    plot_timeseries(ax, df, df.index[0], df.index[-1], label='Hourly Demand')
+    ax.set_title('Hourly Electricity Demand', size=24)
     # plt.savefig('../images/hourly_elec_demand.png', dpi=500)
-    # plt.show()
+    plt.show()
 
