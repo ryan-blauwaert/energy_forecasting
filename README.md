@@ -156,11 +156,11 @@ The figure below summarizes the results of the various models tested in this ana
 ---
 Based on these results, the model used to forecast hourly electricity demand is highly dependent on the time frame of interest. The Autoregressive RNN outperforms the XGBoost model for short-term forecasting, and can be used to assist in decisions regarding electricity transmission. For longer-term forecasting, the XGBoost model is superior, and is therefore better suited for informing decisions regarding resource allocation. 
 
-## Regional Forecasting
+The day-ahead RNN and gradient boosted regressor are therefor the models which I moved into production.
 
+## Regional Forecasting and Web Application
 
-
-## Web Application
+Using the same methodology described above, I created similar models (one short-term and one long-term) for each of the 13 geographic subregions outlined by the EIA. This expands the overall utility of these electricity demand forecasts and should improve their accuracy. In total, I created, trained, and tuned 28 models (two for each subregion as well as for the continental U.S. as a whole)
 
 In order to allow users to interact with these models and generate electricity demand predictions, I created a simple web application using Flask and Bootstrap. The application allows a user to select a region of interest, load the most recent data from the EIA website for that region, and predict the next 24 hours of demand. The application also generates a trend projection for one year into the future. Below are some screenshots showing the application's basic functionality:
 **Homescreen:**
