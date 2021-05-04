@@ -4,7 +4,7 @@
 ![header](./images/power-transmission.jpg)
 
 ## Motivation
-For most of us, it's difficult to imagine a world in which the lights don't come on when we flip a switch. We don't often consider the source of the electricity that flows around us or its path from generation to transmission to consumption. It turns out that electricity is unlike most commodities we consume; it is costly to produce and impossible to store efficiently for future use. Because of this, it is extremely important for producers to accurately predict electricity demand. 
+For most of us, it's difficult to imagine a world in which the lights don't come on when we flip a switch. We don't often consider the source of the electricity that flows around us or its path from generation to transmission to consumption. It turns out that electricity is unlike most commodities we consume; it is costly to produce and extremely difficult to store efficiently for future use. Because of this, it is extremely important for producers to accurately predict electricity demand. 
 
 Forecasting allows electricity generators to:
 - make informed long-term business decision such as building new power plants in response to increasing demand
